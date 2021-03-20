@@ -8,6 +8,14 @@
 #
 using Random, PyPlot, LinearAlgebra
 
+function myFit(x::Array, y::Array)
+	M = [sum(y) sum(@. x*y); sum(@. x*y) sum(@. x^2 * y)]
+	b = [sum(@. y*log(y)); sum(@. x*y*log(y))]
+	param = inv(M)*b
+	return exp(param[1]), param[2]
+end
+
+
 
 function myMean(x::Array)
 	N = length(x)
@@ -52,9 +60,16 @@ axs[2].set_ylabel("CDF")
 legend(loc = "best")
 show()
 
+x = convert(Array, LinRange(minimum(r), maximum(r), length(r)))
+
+
+A, B = myFit(x, r)
+
+
 using Printf
 
 @printf "Estimating λ...\n"
 @printf "| Method | Estimate | Time |\n"
 @printf "|--------------------------|\n"
-@printf "| Mean   | %0.2f    |      |\n" @time myMean(r) 
+@printf "| Mean   | %0.2f    |      |\n" myMean(r)
+@printf "| Fit    | %0.2f    | 	    |\n" A
