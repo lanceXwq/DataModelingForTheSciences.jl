@@ -1,11 +1,11 @@
 ### A Pluto.jl notebook ###
-# v0.14.4
+# v0.14.5
 
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 463c037a-d984-4394-9ce6-f6851bae99d1
-using SpecialFunctions
+# ╔═╡ 2929689f-a9fd-4210-91e7-26505c9b8c9a
+using SpecialFunctions, Statistics, Plots, StatsBase, LinearAlgebra
 
 # ╔═╡ 98a4942c-fca5-4d42-b043-df24e76aea23
 md"
@@ -58,7 +58,7 @@ md"
 "
 
 # ╔═╡ a0352d17-18e9-43c4-8f75-0f3e4ce40358
-rr = poissrnd(20, 1000);
+r = poissrnd(20, 1000);
 
 # ╔═╡ 0151c22f-6ce7-4962-8978-7e2f5478824d
 function poisspdf(n, λ)
@@ -73,21 +73,33 @@ end
 
 # ╔═╡ 5b55e3af-9cb1-493c-a57a-5a7a9b4383ee
 begin
-	using Plots, StatsBase, LinearAlgebra
-	pdff = normalize(fit(Histogram, rr), mode=:pdf)
-	plot(pdff, label = "empirical")
-	xx = 0:Int(round(maximum(pdff.edges...)))
-	plot!(xx, poisspdf(xx,20), label = "exact", linewidth = 2, linecolor = :red)
+	pdf = normalize(fit(Histogram, r), mode=:pdf)
+	plot(pdf, label = "empirical")
+	x = 0:Int(round(maximum(pdf.edges...)))
+	plot!(x, poisspdf(x,20), label = "exact", linewidth = 2, linecolor = :red)
 	xaxis!("r")
 	yaxis!("pdf")
 end
 
+# ╔═╡ b61878e3-fe11-470e-8cca-62d35a39d7e9
+begin
+	mean_val = zeros(Float64, 999);
+	var_val = zeros(Float64, 999);
+	for idx = 2:1000
+		mean_val[idx-1] = mean(r[1:idx]);
+		var_val[idx-1] = var(r[1:idx]);
+	end
+	plot([1,1000], [1,1], label = "", linecolor = :red)
+	plot!(2:1000, mean_val ./ var_val, label = "", linecolor = :steelblue)
+end
+
 # ╔═╡ Cell order:
 # ╟─98a4942c-fca5-4d42-b043-df24e76aea23
+# ╠═2929689f-a9fd-4210-91e7-26505c9b8c9a
 # ╟─2fcf069a-729a-4918-be1c-9e98e8060bdd
 # ╠═90905632-a925-4d08-93d5-7ad8d6dc54d1
 # ╟─fb6513cb-1f6d-4bbe-95de-45e47b0d2d44
 # ╠═a0352d17-18e9-43c4-8f75-0f3e4ce40358
-# ╠═463c037a-d984-4394-9ce6-f6851bae99d1
 # ╠═0151c22f-6ce7-4962-8978-7e2f5478824d
 # ╠═5b55e3af-9cb1-493c-a57a-5a7a9b4383ee
+# ╠═b61878e3-fe11-470e-8cca-62d35a39d7e9
