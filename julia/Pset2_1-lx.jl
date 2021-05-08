@@ -1,15 +1,14 @@
 ### A Pluto.jl notebook ###
-# v0.14.4
+# v0.14.5
 
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ d84527f2-cf85-407d-9d6c-e2e0c13c48b9
-begin
-	using LsqFit
-	@. model_pdf(r, λ) = λ*exp(-r*λ);
-	@. model_cdf(r, λ) = 1 - exp(-r*λ);
-end
+# ╔═╡ d359356b-af83-48c4-8a50-554ce97625cb
+using Plots, StatsBase, LinearAlgebra
+
+# ╔═╡ 97fe39e9-f3c1-4bbf-b677-d87a796ded33
+using LsqFit
 
 # ╔═╡ c1e65a92-f79a-4c11-8fae-b3b5ca31e8e5
 md"
@@ -28,14 +27,10 @@ md"
 ## Solution:
 ### a)
 For an exponential distribution with the form $p(r)=\lambda e^{-\lambda r}$ for $r\geq 0$, the corresponding cdf, as shown in the example 1.13, is $C(r)=1-e^{-\lambda r}$. If follows that $C^{-1}(u)=-\frac{1}{\lambda}\log(1-u)$. According to the fundamental theorem of simulation, we first sample $u$ from $\text{Uniform}_{[0,1]}$, then $r$ is calculated using $r=C^{-1}(u)$.
-
 "
 
 # ╔═╡ d69b0313-ccc5-4407-9ae2-d68033adaf0d
-function exprnd(λ, N)
-    u = rand(N); # Generate u with some give dimension.
-    return @. -1/λ * log(u) # Calculate r.
-end;
+exprnd(λ::Real, N::Integer) = -1/λ .* log.(rand(N))
 
 # ╔═╡ 5534e093-7e22-4e6c-a813-681e2a687066
 md"
@@ -57,9 +52,11 @@ N = 100
 # ╔═╡ fbdebc5d-406c-483c-8591-1ac39578ca78
 r = exprnd(λ, N); # Call the functions we defined in a).
 
+# ╔═╡ 4f0623c9-3a85-4110-bedb-56b58b124c21
+md"Now the result can be tested via some visualization."
+
 # ╔═╡ 047abd42-2095-4531-8779-221e18519555
 begin
-	using Plots, StatsBase, LinearAlgebra
 	pdf = normalize(fit(Histogram, r), mode=:pdf)
 	plot(pdf, label = "empirical")
 	x = range(0, stop = maximum(pdf.edges...), length = 1000);
@@ -67,9 +64,6 @@ begin
 	xaxis!("r")
 	yaxis!("pdf")
 end
-
-# ╔═╡ 4f0623c9-3a85-4110-bedb-56b58b124c21
-md"Now the result can be tested via some visualization."
 
 # ╔═╡ f8776b5f-43f5-411e-98a5-db596ab40013
 md"
@@ -97,6 +91,12 @@ md"
 ### c)
 "
 
+# ╔═╡ d84527f2-cf85-407d-9d6c-e2e0c13c48b9
+begin
+	@. model_pdf(r, λ) = λ*exp(-r*λ);
+	@. model_cdf(r, λ) = 1 - exp(-r*λ);
+end
+
 # ╔═╡ 3f971df3-cbec-4a3c-bde2-8654e3528bc0
 begin
 	fit_pdf = curve_fit(model_pdf, midpoints, pdf.weights, [0.5]);
@@ -122,16 +122,18 @@ mean(r) # Get λ from calculating the mean of all samples.
 # ╟─c1e65a92-f79a-4c11-8fae-b3b5ca31e8e5
 # ╟─225ff9e3-bd16-4d72-8016-53c70ee6b095
 # ╠═d69b0313-ccc5-4407-9ae2-d68033adaf0d
-# ╠═5534e093-7e22-4e6c-a813-681e2a687066
+# ╟─5534e093-7e22-4e6c-a813-681e2a687066
 # ╟─c75b1010-7419-4e3a-be0f-77738dbb5417
 # ╟─0ae23229-20be-4dd0-b75a-6a62c0e1dede
 # ╟─6deb9836-71b1-4db4-8913-fbacb3863651
 # ╠═fbdebc5d-406c-483c-8591-1ac39578ca78
 # ╟─4f0623c9-3a85-4110-bedb-56b58b124c21
+# ╠═d359356b-af83-48c4-8a50-554ce97625cb
 # ╠═047abd42-2095-4531-8779-221e18519555
 # ╟─f8776b5f-43f5-411e-98a5-db596ab40013
 # ╠═336f643e-aeb5-431b-be52-002a566e97e2
 # ╟─4690219e-b105-40f9-a574-fabf0f00925f
+# ╠═97fe39e9-f3c1-4bbf-b677-d87a796ded33
 # ╠═d84527f2-cf85-407d-9d6c-e2e0c13c48b9
 # ╠═3f971df3-cbec-4a3c-bde2-8654e3528bc0
 # ╠═152ad38e-bb79-4800-a1de-e9308714e306

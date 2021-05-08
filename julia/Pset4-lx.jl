@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.4
+# v0.14.5
 
 using Markdown
 using InteractiveUtils
@@ -40,11 +40,14 @@ Let's start from specifiying the values of ``\pi_1,\mu_1,\mu_2,\sigma``, as well
 # ╔═╡ 034b2209-3618-4423-9097-3af3d7299055
 N = 1000
 
+# ╔═╡ dd69e9dc-9b6b-42eb-86b5-e1f751a711d0
+typeof(μ)
+
 # ╔═╡ 1e89f4ed-be1a-4408-ac33-0ca58656c904
-gaussian(y, μ, σ) = @. 1 / √(2*π*σ^2) * exp(-(y-μ)^2/(2*σ^2))
+gaussian(y, μ::Real, σ::Real) = @. 1 / √(2*π*σ^2) * exp(-(y-μ)^2/(2*σ^2))
 
 # ╔═╡ 1307292d-c51c-4ce8-abd0-7de9d9161a00
-GMM(y, pi, μ, σ) = @. pi * gaussian(y, μ[1], σ) + (1 - pi) * gaussian(y, μ[2], σ)
+GMM(y, pi::Real, μ, σ::Real) = @. pi * gaussian(y, μ[1], σ) + (1 - pi) * gaussian(y, μ[2], σ)
 
 # ╔═╡ d785ad01-7d14-43f1-9685-12ace5f631d7
 md"
@@ -55,7 +58,7 @@ Since we only have two possible states in this problem, we can write a simple an
 "
 
 # ╔═╡ 2595ced6-2285-4a4b-ab6a-9e0f1ad193b1
-randc(p::Float64, N::Int) = (rand(N) .> p) .+ 1
+randc(p::Real, N::Integer) = (rand(N) .> p) .+ 1
 
 # ╔═╡ b4039295-3ce1-42c1-a43d-eb8be79d0105
 md"
@@ -97,7 +100,7 @@ and
 "
 
 # ╔═╡ d6b05d9e-a1c4-431a-b9c1-a65fa961e6f6
-function gamma(y, pi, μ, σ) 
+function gamma(y, pi::Real, μ::Vector{<:Real}, σ::Real) 
 	return @. 1 / (1 + (1 - pi) / pi * exp(((y-μ[1])^2-(y-μ[2])^2)/(2*σ^2)))
 end
 
@@ -166,7 +169,7 @@ md"
 # ╔═╡ 1f2c55fc-1414-4274-b2f3-4c346f9eef39
 begin
 	plot([1, NIter], [π₁, π₁], label = "ground truth", linecolor = :red, line = (:dash, 4))
-	plot!(π₁_old, label = "EM", linecolor = :blue)
+	plot!(π₁_old, label = "EM", linecolor = :steelblue)
 	xaxis!("Iteration")
 	yaxis!(L"\pi_1")
 end
@@ -175,8 +178,8 @@ end
 begin
 	plot([1, NIter], [μ[1], μ[1]], label = "ground truth", linecolor = :red, line = (:dash, 4))
 	plot!([1, NIter], [μ[2], μ[2]], label = "", linecolor = :red, line = (:dash, 4))
-	plot!(μ_old[:, 1], label = "EM", linecolor = :blue)
-	plot!(μ_old[:, 2], label = "", linecolor = :blue)
+	plot!(μ_old[:, 1], label = "EM", linecolor = :steelblue)
+	plot!(μ_old[:, 2], label = "", linecolor = :steelblue)
 	xaxis!("Iteration")
 	yaxis!(L"\mu")
 end
@@ -184,7 +187,7 @@ end
 # ╔═╡ c2520042-8977-48e7-9811-0fd435958053
 begin
 	plot([1, NIter], [σ, σ], label = "ground truth", linecolor = :red, line = (:dash, 4))
-	plot!(σ_old, label = "EM", linecolor = :blue)
+	plot!(σ_old, label = "EM", linecolor = :steelblue)
 	xaxis!("Iteration")
 	yaxis!(L"\pi_1")
 end
@@ -198,6 +201,7 @@ end
 # ╟─31e09874-f041-408b-b2f7-a6e25a0aa45d
 # ╟─a86b5d8a-99d6-4f9b-9ba8-36992e14ffea
 # ╟─034b2209-3618-4423-9097-3af3d7299055
+# ╠═dd69e9dc-9b6b-42eb-86b5-e1f751a711d0
 # ╠═1e89f4ed-be1a-4408-ac33-0ca58656c904
 # ╠═1307292d-c51c-4ce8-abd0-7de9d9161a00
 # ╟─d785ad01-7d14-43f1-9685-12ace5f631d7

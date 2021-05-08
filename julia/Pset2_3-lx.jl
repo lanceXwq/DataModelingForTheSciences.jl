@@ -28,16 +28,16 @@ Start with specifying the birth rate and the death rate.
 "
 
 # ╔═╡ 2597b2a6-ff21-4d2c-a8bb-1fe09959d728
-rate_birth = 100.0
+rate_birth = 100
 
 # ╔═╡ d62088f7-06e9-4904-97ec-f6017a2b46ed
-rate_death = 1.0
+rate_death = 1
 
 # ╔═╡ 6ed8fd8d-7ea9-4a8d-8441-ae57f27b70d2
 N = 5000
 
 # ╔═╡ 36eec2ba-f3d5-40f6-a9d0-26e6ce36c7a8
-function gillespie(n_init::Int64, rate_birth::Float64, rate_death::Float64, N::Int64)
+function gillespie(n_init::Integer, rate_birth::Real, rate_death::Real, N::Integer)
 	n = zeros(Int64, N);
 	t = zeros(Float64, N);
 	n[1] = n_init;
