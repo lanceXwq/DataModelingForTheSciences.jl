@@ -46,7 +46,7 @@ function poissrnd(λ, N)
 		u = rand()
 		while u > lim
 			u = u * rand()
-			n[idx] = n[idx] + 1
+			n[idx] += 1
 		end
 	end
     return n
@@ -59,9 +59,6 @@ md"
 
 # ╔═╡ a0352d17-18e9-43c4-8f75-0f3e4ce40358
 r = poissrnd(20, 1000);
-
-# ╔═╡ 98710f81-64b6-4a39-97f9-2c5ff0bed2a5
-typeof(r)
 
 # ╔═╡ 0151c22f-6ce7-4962-8978-7e2f5478824d
 function poisspdf(n, λ::Real)
@@ -97,7 +94,6 @@ end
 # ╠═90905632-a925-4d08-93d5-7ad8d6dc54d1
 # ╟─fb6513cb-1f6d-4bbe-95de-45e47b0d2d44
 # ╠═a0352d17-18e9-43c4-8f75-0f3e4ce40358
-# ╠═98710f81-64b6-4a39-97f9-2c5ff0bed2a5
 # ╠═0151c22f-6ce7-4962-8978-7e2f5478824d
 # ╠═5b55e3af-9cb1-493c-a57a-5a7a9b4383ee
 # ╠═b61878e3-fe11-470e-8cca-62d35a39d7e9
