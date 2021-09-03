@@ -1,11 +1,16 @@
 ### A Pluto.jl notebook ###
-# v0.14.5
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 2929689f-a9fd-4210-91e7-26505c9b8c9a
-using SpecialFunctions, Statistics, Plots, StatsBase, LinearAlgebra
+begin
+	import Pkg, Random
+	Pkg.activate("")
+	Random.seed!(1234)
+	using SpecialFunctions, Statistics, Plots, StatsBase, LinearAlgebra
+end
 
 # ╔═╡ 98a4942c-fca5-4d42-b043-df24e76aea23
 md"
@@ -39,8 +44,8 @@ or equivalently,
 "
 
 # ╔═╡ 90905632-a925-4d08-93d5-7ad8d6dc54d1
-function poissrnd(λ, N)
-	n = zeros(Int64, N)
+function poissrnd(λ::Real, N::Int)
+	n = zeros(Int, N)
 	lim = exp(-λ)
 	for idx = 1:N
 		u = rand()
@@ -61,16 +66,16 @@ md"
 r = poissrnd(20, 1000);
 
 # ╔═╡ 0151c22f-6ce7-4962-8978-7e2f5478824d
-function poisspdf(n, λ::Real)
-	return exp.(n .* log(λ) .- λ .- logfactorial.(n))
+function poisspdf(n::Int, λ::Real)
+	return exp(n * log(λ) - λ - logfactorial(n))
 end
 
 # ╔═╡ 5b55e3af-9cb1-493c-a57a-5a7a9b4383ee
 begin
 	pdf = normalize(fit(Histogram, r), mode=:pdf)
 	plot(pdf, label = "empirical")
-	x = 0:Int(round(maximum(pdf.edges...)))
-	plot!(x, poisspdf(x,20), label = "exact", linewidth = 2, linecolor = :red)
+	x = collect(0:Int(round(maximum(pdf.edges...))))
+	plot!(x, poisspdf.(x,20), label = "exact", linewidth = 2, linecolor = :red)
 	xaxis!("r")
 	yaxis!("pdf")
 end

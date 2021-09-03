@@ -6,14 +6,47 @@ using InteractiveUtils
 
 # ╔═╡ 1398e536-09ff-11ec-177f-6b6668e95c95
 begin
-    import Pkg
+    import Pkg, Random
     Pkg.activate("")
+	Random.seed!(1234)
     using Distributions, Plots, LaTeXStrings
 end
+
+# ╔═╡ 25d421ef-33e3-400f-ad81-f8e09d950dc7
+md"
+# Problem 2: The genetic toggle switch and stochastic bistability.
+The toggle switch (Gardner et al. Nat. 403, 339-342) is a common feedback loop motif in systems biology and it exhibits a fascinating behavior called  'stochastic bistability'. We will now simulate this behavior. Consider the following chemical reactions involving two proteins, ``A`` and ``B``:
+```math
+\begin{align*}
+A & \xrightarrow{k_{d}} \phi\\
+B & \xrightarrow{k_{d}} \phi\\
+g_{A} & \xrightarrow{k_{p}} g_{A}+A\\
+g_{B} & \xrightarrow{k_{p}} g_{B}+B\\
+g_{A}+B & \xleftrightarrow[k_{r}]{k_{f}} g_{A}^{*}\\
+g_{B}+A & \xleftrightarrow[k_{r}]{k_{f}} g_{B}^{*}
+\end{align*}
+```
+where ``k_{d}`` are degradation rates and ``k_{p}`` are production rates for both proteins.
+``g_{A}`` is the gene responsible for the production of ``A`` which can converted into an inactive form ``g_{A}^{*}`` by binding to B.
+Vice versa for ``g_{B}``. Assume you only have one gene available in the cell so that ``g_{A}+g_{A}^{*}=1`` and  ``g_{B}+g_{B}^{*}=1``.
+Also, assume throughout that ``g_{A}^{*}+g_{B}^{*} =1``, ``k_{d} < k_{p}`` and ``k_{r}<k_{f}n_{B}, k_{f}n_{A}``.\
+(a) Simulate the chemical reactions starting with ``n_{A}=0`` and ``n_{B}=0`` for many time steps. Adjust your rates until you see 
+stochastic switching events between periods when ``A`` exceeds ``B`` in number and ``B`` exceeds ``A`` in number. 
+You should see stochastic hopping between two solutions (which we call ''fixed points'').\
+(b) Would you expect to see this stochastic switching occur if you had started with a large amount of ``n_{A}`` and ``n_{B}`` initially? 
+In technical language, qualitatively explain (in words) how the fixed point structure changes for the corresponding rate equations.\
+(c) The condition that ``g_{A}^{*}+g_{B}^{*} =1`` is called the exclusive switch. Relax this condition and re-simulate the toggle switch.
+What new fixed point appears?
+"
 
 # ╔═╡ 21524504-7968-4a8d-b99f-1de21010430c
 md"
 ## Solution:
+"
+
+# ╔═╡ b0b548fb-f781-4e89-a5e4-bf9f337bddd1
+md"
+### a)
 "
 
 # ╔═╡ 3a809403-89e4-42c6-8dd3-f9dd6c915d14
@@ -76,8 +109,10 @@ begin
 end
 
 # ╔═╡ Cell order:
+# ╟─25d421ef-33e3-400f-ad81-f8e09d950dc7
+# ╟─21524504-7968-4a8d-b99f-1de21010430c
 # ╠═1398e536-09ff-11ec-177f-6b6668e95c95
-# ╠═21524504-7968-4a8d-b99f-1de21010430c
+# ╟─b0b548fb-f781-4e89-a5e4-bf9f337bddd1
 # ╠═3a809403-89e4-42c6-8dd3-f9dd6c915d14
 # ╠═af84b4f4-ae44-4e9c-95a0-0d591d425ba1
 # ╠═f06290ce-ce15-41a7-8700-37653627753a

@@ -1,11 +1,16 @@
 ### A Pluto.jl notebook ###
-# v0.14.5
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ a3ac2089-cea2-40b8-bf2e-edc212c611e7
-using LaTeXStrings, Plots, StatsBase, LinearAlgebra
+begin
+	import Pkg, Random
+	Pkg.activate("")
+	Random.seed!(1234)
+	using LaTeXStrings, Plots, StatsBase, LinearAlgebra
+end
 
 # ╔═╡ 206cb0d2-a843-11eb-0b72-f942682593b2
 md"
@@ -40,14 +45,11 @@ Let's start from specifiying the values of ``\pi_1,\mu_1,\mu_2,\sigma``, as well
 # ╔═╡ 034b2209-3618-4423-9097-3af3d7299055
 N = 1000
 
-# ╔═╡ dd69e9dc-9b6b-42eb-86b5-e1f751a711d0
-typeof(μ)
-
 # ╔═╡ 1e89f4ed-be1a-4408-ac33-0ca58656c904
-gaussian(y, μ::Real, σ::Real) = @. 1 / √(2*π*σ^2) * exp(-(y-μ)^2/(2*σ^2))
+gaussian(y::Real, μ::Real, σ::Real) = 1 / √(2*π*σ^2) * exp(-(y-μ)^2/(2*σ^2))
 
 # ╔═╡ 1307292d-c51c-4ce8-abd0-7de9d9161a00
-GMM(y, pi::Real, μ, σ::Real) = @. pi * gaussian(y, μ[1], σ) + (1 - pi) * gaussian(y, μ[2], σ)
+GMM(y::Real, pi::Real, μ₁::Real, μ₂::Real, σ::Real) = pi * gaussian(y, μ₁, σ) + (1 - pi) * gaussian(y, μ₂, σ)
 
 # ╔═╡ d785ad01-7d14-43f1-9685-12ace5f631d7
 md"
@@ -80,8 +82,8 @@ y = μ[s] .+ σ .* randn(N);
 begin
 	pdf = normalize(fit(Histogram, y), mode=:pdf)
 	plot(pdf, label = "histogram")
-	x = range(0, stop = maximum(pdf.edges...), length = 1000);
-	plot!(x, GMM(x, π₁, μ, σ), label = "exact", linewidth = 2, linecolor = :red)
+	x = collect(range(0, stop = maximum(pdf.edges...), length = 1000));
+	plot!(x, GMM.(x, π₁, μ[1], μ[2], σ), label = "exact", linewidth = 2, linecolor = :red)
 	xaxis!("data")
 	yaxis!("pdf")
 end
@@ -197,11 +199,10 @@ end
 # ╟─70b8d1da-bac4-4d65-912a-bce179e632ca
 # ╠═a3ac2089-cea2-40b8-bf2e-edc212c611e7
 # ╟─32ef202f-9854-492f-a5cc-67de57f7dd9a
-# ╟─cefb0e0e-4155-402d-a2cb-9a7e38105d4f
+# ╠═cefb0e0e-4155-402d-a2cb-9a7e38105d4f
 # ╟─31e09874-f041-408b-b2f7-a6e25a0aa45d
 # ╟─a86b5d8a-99d6-4f9b-9ba8-36992e14ffea
 # ╟─034b2209-3618-4423-9097-3af3d7299055
-# ╠═dd69e9dc-9b6b-42eb-86b5-e1f751a711d0
 # ╠═1e89f4ed-be1a-4408-ac33-0ca58656c904
 # ╠═1307292d-c51c-4ce8-abd0-7de9d9161a00
 # ╟─d785ad01-7d14-43f1-9685-12ace5f631d7

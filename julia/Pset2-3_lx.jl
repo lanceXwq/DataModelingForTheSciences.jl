@@ -1,11 +1,16 @@
 ### A Pluto.jl notebook ###
-# v0.14.5
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ dd274e79-5d97-4a60-8365-c0caefbaffba
-using Plots
+begin
+	import Pkg, Random
+	Pkg.activate("")
+	Random.seed!(1234)
+	using Plots
+end
 
 # ╔═╡ d00c6ad6-af7c-11eb-3dbf-41fcda7e6cd4
 md"
@@ -37,7 +42,7 @@ rate_death = 1
 N = 5000
 
 # ╔═╡ 36eec2ba-f3d5-40f6-a9d0-26e6ce36c7a8
-function gillespie(n_init::Integer, rate_birth::Real, rate_death::Real, N::Integer)
+function gillespie(n_init::Int, rate_birth::Real, rate_death::Real, N::Int)
 	n = zeros(Int64, N);
 	t = zeros(Float64, N);
 	n[1] = n_init;
@@ -63,7 +68,7 @@ begin
 end
 
 # ╔═╡ Cell order:
-# ╠═d00c6ad6-af7c-11eb-3dbf-41fcda7e6cd4
+# ╟─d00c6ad6-af7c-11eb-3dbf-41fcda7e6cd4
 # ╟─c0420396-cf2f-4f07-b81a-6f3e1d05ca67
 # ╠═dd274e79-5d97-4a60-8365-c0caefbaffba
 # ╟─707f6c32-9311-47ae-9a71-67ddc1e816f7

@@ -1,11 +1,16 @@
 ### A Pluto.jl notebook ###
-# v0.14.5
+# v0.15.1
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ d359356b-af83-48c4-8a50-554ce97625cb
-using Plots, StatsBase, LinearAlgebra
+begin
+	import Pkg, Random
+	Pkg.activate("")
+	Random.seed!(1234)
+	using Plots, StatsBase, LinearAlgebra
+end
 
 # ╔═╡ 97fe39e9-f3c1-4bbf-b677-d87a796ded33
 using LsqFit
@@ -30,7 +35,7 @@ For an exponential distribution with the form $p(r)=\lambda e^{-\lambda r}$ for 
 "
 
 # ╔═╡ d69b0313-ccc5-4407-9ae2-d68033adaf0d
-exprnd(λ::Real, N::Integer) = -1/λ .* log.(rand(N))
+exprnd(λ::Real, N::Int) = -1/λ .* log.(rand(N))
 
 # ╔═╡ 5534e093-7e22-4e6c-a813-681e2a687066
 md"
@@ -124,11 +129,11 @@ mean(r) # Get λ from calculating the mean of all samples.
 # ╠═d69b0313-ccc5-4407-9ae2-d68033adaf0d
 # ╟─5534e093-7e22-4e6c-a813-681e2a687066
 # ╟─c75b1010-7419-4e3a-be0f-77738dbb5417
+# ╠═d359356b-af83-48c4-8a50-554ce97625cb
 # ╟─0ae23229-20be-4dd0-b75a-6a62c0e1dede
 # ╟─6deb9836-71b1-4db4-8913-fbacb3863651
 # ╠═fbdebc5d-406c-483c-8591-1ac39578ca78
 # ╟─4f0623c9-3a85-4110-bedb-56b58b124c21
-# ╠═d359356b-af83-48c4-8a50-554ce97625cb
 # ╠═047abd42-2095-4531-8779-221e18519555
 # ╟─f8776b5f-43f5-411e-98a5-db596ab40013
 # ╠═336f643e-aeb5-431b-be52-002a566e97e2

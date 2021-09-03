@@ -6,8 +6,9 @@ using InteractiveUtils
 
 # ╔═╡ 97e973bc-5903-434f-b1b2-238c7ddcdf71
 begin
-    import Pkg
+    import Pkg, Random
     Pkg.activate("")
+	Random.seed!(1234)
     using Distributions, Plots
 end
 
