@@ -6,10 +6,10 @@ using InteractiveUtils
 
 # ╔═╡ 2929689f-a9fd-4210-91e7-26505c9b8c9a
 begin
-	import Pkg, Random
-	Pkg.activate("")
-	Random.seed!(1234)
-	using SpecialFunctions, Statistics, Plots, StatsBase, LinearAlgebra
+    import Pkg, Random
+    Pkg.activate("")
+    Random.seed!(1234)
+    using SpecialFunctions, Statistics, Plots, StatsBase, LinearAlgebra
 end
 
 # ╔═╡ 98a4942c-fca5-4d42-b043-df24e76aea23
@@ -45,15 +45,15 @@ or equivalently,
 
 # ╔═╡ 90905632-a925-4d08-93d5-7ad8d6dc54d1
 function poissrnd(λ::Real, N::Int)
-	n = zeros(Int, N)
-	lim = exp(-λ)
-	for idx = 1:N
-		u = rand()
-		while u > lim
-			u = u * rand()
-			n[idx] += 1
-		end
-	end
+    n = zeros(Int, N)
+    lim = exp(-λ)
+    for idx = 1:N
+        u = rand()
+        while u > lim
+            u = u * rand()
+            n[idx] += 1
+        end
+    end
     return n
 end
 
@@ -67,29 +67,29 @@ r = poissrnd(20, 1000);
 
 # ╔═╡ 0151c22f-6ce7-4962-8978-7e2f5478824d
 function poisspdf(n::Int, λ::Real)
-	return exp(n * log(λ) - λ - logfactorial(n))
+    return exp(n * log(λ) - λ - logfactorial(n))
 end
 
 # ╔═╡ 5b55e3af-9cb1-493c-a57a-5a7a9b4383ee
 begin
-	pdf = normalize(fit(Histogram, r), mode=:pdf)
-	plot(pdf, label = "empirical")
-	x = collect(0:Int(round(maximum(pdf.edges...))))
-	plot!(x, poisspdf.(x,20), label = "exact", linewidth = 2, linecolor = :red)
-	xaxis!("r")
-	yaxis!("pdf")
+    pdf = normalize(fit(Histogram, r), mode = :pdf)
+    plot(pdf, label = "empirical")
+    x = collect(0:Int(round(maximum(pdf.edges...))))
+    plot!(x, poisspdf.(x, 20), label = "exact", linewidth = 2, linecolor = :red)
+    xaxis!("r")
+    yaxis!("pdf")
 end
 
 # ╔═╡ b61878e3-fe11-470e-8cca-62d35a39d7e9
 begin
-	mean_val = zeros(Float64, 999);
-	var_val = zeros(Float64, 999);
-	for idx = 2:1000
-		mean_val[idx-1] = mean(r[1:idx]);
-		var_val[idx-1] = var(r[1:idx]);
-	end
-	plot([1,1000], [1,1], label = "", linecolor = :red)
-	plot!(2:1000, mean_val ./ var_val, label = "", linecolor = :steelblue)
+    mean_val = zeros(Float64, 999)
+    var_val = zeros(Float64, 999)
+    for idx = 2:1000
+        mean_val[idx-1] = mean(r[1:idx])
+        var_val[idx-1] = var(r[1:idx])
+    end
+    plot([1, 1000], [1, 1], label = "", linecolor = :red)
+    plot!(2:1000, mean_val ./ var_val, label = "", linecolor = :steelblue)
 end
 
 # ╔═╡ Cell order:

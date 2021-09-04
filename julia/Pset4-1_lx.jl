@@ -6,10 +6,10 @@ using InteractiveUtils
 
 # ╔═╡ a3ac2089-cea2-40b8-bf2e-edc212c611e7
 begin
-	import Pkg, Random
-	Pkg.activate("")
-	Random.seed!(1234)
-	using LaTeXStrings, Plots, StatsBase, LinearAlgebra
+    import Pkg, Random
+    Pkg.activate("")
+    Random.seed!(1234)
+    using LaTeXStrings, Plots, StatsBase, LinearAlgebra
 end
 
 # ╔═╡ 206cb0d2-a843-11eb-0b72-f942682593b2
@@ -37,7 +37,7 @@ Let's start from specifiying the values of ``\pi_1,\mu_1,\mu_2,\sigma``, as well
 π₁ = 0.6
 
 # ╔═╡ 31e09874-f041-408b-b2f7-a6e25a0aa45d
-μ=[3, 5]
+μ = [3, 5]
 
 # ╔═╡ a86b5d8a-99d6-4f9b-9ba8-36992e14ffea
 σ = 1
@@ -46,10 +46,11 @@ Let's start from specifiying the values of ``\pi_1,\mu_1,\mu_2,\sigma``, as well
 N = 1000
 
 # ╔═╡ 1e89f4ed-be1a-4408-ac33-0ca58656c904
-gaussian(y::Real, μ::Real, σ::Real) = 1 / √(2*π*σ^2) * exp(-(y-μ)^2/(2*σ^2))
+gaussian(y::Real, μ::Real, σ::Real) = 1 / √(2 * π * σ^2) * exp(-(y - μ)^2 / (2 * σ^2))
 
 # ╔═╡ 1307292d-c51c-4ce8-abd0-7de9d9161a00
-GMM(y::Real, pi::Real, μ₁::Real, μ₂::Real, σ::Real) = pi * gaussian(y, μ₁, σ) + (1 - pi) * gaussian(y, μ₂, σ)
+GMM(y::Real, pi::Real, μ₁::Real, μ₂::Real, σ::Real) =
+    pi * gaussian(y, μ₁, σ) + (1 - pi) * gaussian(y, μ₂, σ)
 
 # ╔═╡ d785ad01-7d14-43f1-9685-12ace5f631d7
 md"
@@ -80,12 +81,12 @@ y = μ[s] .+ σ .* randn(N);
 
 # ╔═╡ c323acb0-8b89-49bc-a93a-efc641e76909
 begin
-	pdf = normalize(fit(Histogram, y), mode=:pdf)
-	plot(pdf, label = "histogram")
-	x = collect(range(0, stop = maximum(pdf.edges...), length = 1000));
-	plot!(x, GMM.(x, π₁, μ[1], μ[2], σ), label = "exact", linewidth = 2, linecolor = :red)
-	xaxis!("data")
-	yaxis!("pdf")
+    pdf = normalize(fit(Histogram, y), mode = :pdf)
+    plot(pdf, label = "histogram")
+    x = collect(range(0, stop = maximum(pdf.edges...), length = 1000))
+    plot!(x, GMM.(x, π₁, μ[1], μ[2], σ), label = "exact", linewidth = 2, linecolor = :red)
+    xaxis!("data")
+    yaxis!("pdf")
 end
 
 # ╔═╡ 0badca44-d32b-4771-b6f8-e66624551add
@@ -102,8 +103,8 @@ and
 "
 
 # ╔═╡ d6b05d9e-a1c4-431a-b9c1-a65fa961e6f6
-function gamma(y, pi::Real, μ::Vector{<:Real}, σ::Real) 
-	return @. 1 / (1 + (1 - pi) / pi * exp(((y-μ[1])^2-(y-μ[2])^2)/(2*σ^2)))
+function gamma(y, pi::Real, μ::Vector{<:Real}, σ::Real)
+    return @. 1 / (1 + (1 - pi) / pi * exp(((y - μ[1])^2 - (y - μ[2])^2) / (2 * σ^2)))
 end
 
 # ╔═╡ 5fb43039-584b-4f11-957f-84edc3ae996c
@@ -150,17 +151,20 @@ NIter = 1000
 σ_old[1] = 2;
 
 # ╔═╡ ad850209-4383-4754-8137-e083a6753549
-for idx = 1:NIter - 1
-	gamma1_old = gamma(y, π₁_old[idx], μ_old[idx, :], σ_old[idx])
-	gamma2_old = 1 .- gamma1_old
-	gamma1_sum = sum(gamma1_old)
-	gamma1_y_sum = sum(gamma1_old .* y)
-	gamma2_y_sum = sum(gamma2_old .* y)
-	π₁_old[idx+1] = gamma1_sum / N
-	μ_old[idx+1, 1] = gamma1_y_sum / gamma1_sum
-	μ_old[idx+1, 2] = gamma2_y_sum / (N - gamma1_sum)
-	σ_old[idx+1] = sum(gamma1_old .* (y .- μ_old[idx+1, 1]).^2 + gamma2_old .* (y .- μ_old[idx+1, 2]).^2)
-	σ_old[idx+1] = sqrt(σ_old[idx+1] / N)
+for idx = 1:NIter-1
+    gamma1_old = gamma(y, π₁_old[idx], μ_old[idx, :], σ_old[idx])
+    gamma2_old = 1 .- gamma1_old
+    gamma1_sum = sum(gamma1_old)
+    gamma1_y_sum = sum(gamma1_old .* y)
+    gamma2_y_sum = sum(gamma2_old .* y)
+    π₁_old[idx+1] = gamma1_sum / N
+    μ_old[idx+1, 1] = gamma1_y_sum / gamma1_sum
+    μ_old[idx+1, 2] = gamma2_y_sum / (N - gamma1_sum)
+    σ_old[idx+1] = sum(
+        gamma1_old .* (y .- μ_old[idx+1, 1]) .^ 2 +
+        gamma2_old .* (y .- μ_old[idx+1, 2]) .^ 2,
+    )
+    σ_old[idx+1] = sqrt(σ_old[idx+1] / N)
 end
 
 # ╔═╡ c60dd468-234b-4dec-a1bb-c0e87d4f4b14
@@ -170,28 +174,34 @@ md"
 
 # ╔═╡ 1f2c55fc-1414-4274-b2f3-4c346f9eef39
 begin
-	plot([1, NIter], [π₁, π₁], label = "ground truth", linecolor = :red, line = (:dash, 4))
-	plot!(π₁_old, label = "EM", linecolor = :steelblue)
-	xaxis!("Iteration")
-	yaxis!(L"\pi_1")
+    plot([1, NIter], [π₁, π₁], label = "ground truth", linecolor = :red, line = (:dash, 4))
+    plot!(π₁_old, label = "EM", linecolor = :steelblue)
+    xaxis!("Iteration")
+    yaxis!(L"\pi_1")
 end
 
 # ╔═╡ 932aaef6-5f49-4eea-aab9-90259998e72d
 begin
-	plot([1, NIter], [μ[1], μ[1]], label = "ground truth", linecolor = :red, line = (:dash, 4))
-	plot!([1, NIter], [μ[2], μ[2]], label = "", linecolor = :red, line = (:dash, 4))
-	plot!(μ_old[:, 1], label = "EM", linecolor = :steelblue)
-	plot!(μ_old[:, 2], label = "", linecolor = :steelblue)
-	xaxis!("Iteration")
-	yaxis!(L"\mu")
+    plot(
+        [1, NIter],
+        [μ[1], μ[1]],
+        label = "ground truth",
+        linecolor = :red,
+        line = (:dash, 4),
+    )
+    plot!([1, NIter], [μ[2], μ[2]], label = "", linecolor = :red, line = (:dash, 4))
+    plot!(μ_old[:, 1], label = "EM", linecolor = :steelblue)
+    plot!(μ_old[:, 2], label = "", linecolor = :steelblue)
+    xaxis!("Iteration")
+    yaxis!(L"\mu")
 end
 
 # ╔═╡ c2520042-8977-48e7-9811-0fd435958053
 begin
-	plot([1, NIter], [σ, σ], label = "ground truth", linecolor = :red, line = (:dash, 4))
-	plot!(σ_old, label = "EM", linecolor = :steelblue)
-	xaxis!("Iteration")
-	yaxis!(L"\pi_1")
+    plot([1, NIter], [σ, σ], label = "ground truth", linecolor = :red, line = (:dash, 4))
+    plot!(σ_old, label = "EM", linecolor = :steelblue)
+    xaxis!("Iteration")
+    yaxis!(L"\pi_1")
 end
 
 # ╔═╡ Cell order:

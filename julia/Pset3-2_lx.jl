@@ -8,7 +8,7 @@ using InteractiveUtils
 begin
     import Pkg, Random
     Pkg.activate("")
-	Random.seed!(1234)
+    Random.seed!(1234)
     using Distributions, Plots, LaTeXStrings
 end
 

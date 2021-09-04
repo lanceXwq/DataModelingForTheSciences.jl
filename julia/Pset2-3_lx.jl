@@ -6,10 +6,10 @@ using InteractiveUtils
 
 # ╔═╡ dd274e79-5d97-4a60-8365-c0caefbaffba
 begin
-	import Pkg, Random
-	Pkg.activate("")
-	Random.seed!(1234)
-	using Plots
+    import Pkg, Random
+    Pkg.activate("")
+    Random.seed!(1234)
+    using Plots
 end
 
 # ╔═╡ d00c6ad6-af7c-11eb-3dbf-41fcda7e6cd4
@@ -43,19 +43,19 @@ N = 5000
 
 # ╔═╡ 36eec2ba-f3d5-40f6-a9d0-26e6ce36c7a8
 function gillespie(n_init::Int, rate_birth::Real, rate_death::Real, N::Int)
-	n = zeros(Int64, N);
-	t = zeros(Float64, N);
-	n[1] = n_init;
-	for idx = 2:N
-		propensity = n[idx-1] * rate_death + rate_birth;
-		t[idx] = t[idx-1] - log(rand())/propensity;
-		if propensity * rand() > rate_birth
-			n[idx] = n[idx-1] - 1;
-		else
-			n[idx] = n[idx-1] + 1;
-		end
-	end
-	return n, t
+    n = zeros(Int64, N)
+    t = zeros(Float64, N)
+    n[1] = n_init
+    for idx = 2:N
+        propensity = n[idx-1] * rate_death + rate_birth
+        t[idx] = t[idx-1] - log(rand()) / propensity
+        if propensity * rand() > rate_birth
+            n[idx] = n[idx-1] - 1
+        else
+            n[idx] = n[idx-1] + 1
+        end
+    end
+    return n, t
 end
 
 # ╔═╡ 34b1bdf8-6147-425b-97a6-f4e31558f6be
@@ -63,8 +63,13 @@ end
 
 # ╔═╡ a666ea6c-5249-4e53-b036-50c7aa242f51
 begin
-	plot([0, t[end]], [rate_birth/rate_death, rate_birth/rate_death], linecolor = :red, label = "")
-	plot!(t, n, linecolor = :steelblue, label = "")
+    plot(
+        [0, t[end]],
+        [rate_birth / rate_death, rate_birth / rate_death],
+        linecolor = :red,
+        label = "",
+    )
+    plot!(t, n, linecolor = :steelblue, label = "")
 end
 
 # ╔═╡ Cell order:

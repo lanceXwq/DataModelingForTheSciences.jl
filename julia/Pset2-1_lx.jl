@@ -6,10 +6,10 @@ using InteractiveUtils
 
 # ╔═╡ d359356b-af83-48c4-8a50-554ce97625cb
 begin
-	import Pkg, Random
-	Pkg.activate("")
-	Random.seed!(1234)
-	using Plots, StatsBase, LinearAlgebra
+    import Pkg, Random
+    Pkg.activate("")
+    Random.seed!(1234)
+    using Plots, StatsBase, LinearAlgebra
 end
 
 # ╔═╡ 97fe39e9-f3c1-4bbf-b677-d87a796ded33
@@ -35,7 +35,7 @@ For an exponential distribution with the form $p(r)=\lambda e^{-\lambda r}$ for 
 "
 
 # ╔═╡ d69b0313-ccc5-4407-9ae2-d68033adaf0d
-exprnd(λ::Real, N::Int) = -1/λ .* log.(rand(N))
+exprnd(λ::Real, N::Int) = -1 / λ .* log.(rand(N))
 
 # ╔═╡ 5534e093-7e22-4e6c-a813-681e2a687066
 md"
@@ -62,12 +62,12 @@ md"Now the result can be tested via some visualization."
 
 # ╔═╡ 047abd42-2095-4531-8779-221e18519555
 begin
-	pdf = normalize(fit(Histogram, r), mode=:pdf)
-	plot(pdf, label = "empirical")
-	x = range(0, stop = maximum(pdf.edges...), length = 1000);
-	plot!(x, λ*exp.(-λ .* x), label = "exact", linewidth = 2, linecolor = :red)
-	xaxis!("r")
-	yaxis!("pdf")
+    pdf = normalize(fit(Histogram, r), mode = :pdf)
+    plot(pdf, label = "empirical")
+    x = range(0, stop = maximum(pdf.edges...), length = 1000)
+    plot!(x, λ * exp.(-λ .* x), label = "exact", linewidth = 2, linecolor = :red)
+    xaxis!("r")
+    yaxis!("pdf")
 end
 
 # ╔═╡ f8776b5f-43f5-411e-98a5-db596ab40013
@@ -77,18 +77,18 @@ The cdf plots can either be made using the pdf histogram above, or they can be c
 
 # ╔═╡ 336f643e-aeb5-431b-be52-002a566e97e2
 begin
-	# Based on the pdf.
-	width = pdf.edges[1][2] - pdf.edges[1][1];
-	cdf_heights = cumsum(pdf.weights) * width;
-	midpoints = (pdf.edges[1][1:end-1] + pdf.edges[1][2:end])/2;
-	cdf = bar(midpoints, cdf_heights, label = "empirical 1", bar_width = width)
-	y = range(0, stop = maximum(pdf.edges...), length = 1000);
-	# Calculated directly.
-	r_sorted = sort(r);
-	plot!(r_sorted, (1:N)/N, label = "empirical 2", linewidth = 2, linecolor = :cyan)
-	plot!(y, 1 .- exp.(-λ .* y), label = "exact", linewidth = 2, linecolor = :red)
-	xaxis!("r")
-	yaxis!("cdf")
+    # Based on the pdf.
+    width = pdf.edges[1][2] - pdf.edges[1][1]
+    cdf_heights = cumsum(pdf.weights) * width
+    midpoints = (pdf.edges[1][1:end-1] + pdf.edges[1][2:end]) / 2
+    cdf = bar(midpoints, cdf_heights, label = "empirical 1", bar_width = width)
+    y = range(0, stop = maximum(pdf.edges...), length = 1000)
+    # Calculated directly.
+    r_sorted = sort(r)
+    plot!(r_sorted, (1:N) / N, label = "empirical 2", linewidth = 2, linecolor = :cyan)
+    plot!(y, 1 .- exp.(-λ .* y), label = "exact", linewidth = 2, linecolor = :red)
+    xaxis!("r")
+    yaxis!("cdf")
 end
 
 # ╔═╡ 4690219e-b105-40f9-a574-fabf0f00925f
@@ -98,26 +98,26 @@ md"
 
 # ╔═╡ d84527f2-cf85-407d-9d6c-e2e0c13c48b9
 begin
-	@. model_pdf(r, λ) = λ*exp(-r*λ);
-	@. model_cdf(r, λ) = 1 - exp(-r*λ);
+    @. model_pdf(r, λ) = λ * exp(-r * λ)
+    @. model_cdf(r, λ) = 1 - exp(-r * λ)
 end
 
 # ╔═╡ 3f971df3-cbec-4a3c-bde2-8654e3528bc0
 begin
-	fit_pdf = curve_fit(model_pdf, midpoints, pdf.weights, [0.5]);
-	fit_pdf.param
+    fit_pdf = curve_fit(model_pdf, midpoints, pdf.weights, [0.5])
+    fit_pdf.param
 end
 
 # ╔═╡ 152ad38e-bb79-4800-a1de-e9308714e306
 begin
-	fit_cdf1 = curve_fit(model_cdf, midpoints, cdf_heights, [0.5]);
-	fit_cdf1.param # Get λ from fitting cdf 1.
+    fit_cdf1 = curve_fit(model_cdf, midpoints, cdf_heights, [0.5])
+    fit_cdf1.param # Get λ from fitting cdf 1.
 end
 
 # ╔═╡ d8d2e660-2d42-40ae-b095-8a50da826a9c
 begin
-	fit_cdf2 = curve_fit(model_cdf, r_sorted, (1:N)/N, [0.5]);
-	fit_cdf2.param # Get λ from fitting cdf 2.
+    fit_cdf2 = curve_fit(model_cdf, r_sorted, (1:N) / N, [0.5])
+    fit_cdf2.param # Get λ from fitting cdf 2.
 end
 
 # ╔═╡ 47c7158f-186b-40ea-aba3-aaad0bcbc895

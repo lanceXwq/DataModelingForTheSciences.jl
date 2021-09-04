@@ -8,7 +8,7 @@ using InteractiveUtils
 begin
     import Pkg, Random
     Pkg.activate("")
-	Random.seed!(1234)
+    Random.seed!(1234)
     using Distributions, Plots
 end
 
@@ -58,7 +58,7 @@ reactions = [
 ]
 
 # ╔═╡ 2220fdb3-72b8-46f9-b685-c3cceb3ac427
-rates = [1., 1., 100., 1., 100., 1.]
+rates = [1.0, 1.0, 100.0, 1.0, 100.0, 1.0]
 
 # ╔═╡ 16c0951f-eb96-49e7-91cb-da99e04c0fcc
 function calculate_propensity(population::Vector{Int}, rates::Vector{Float64})
@@ -73,7 +73,11 @@ function calculate_propensity(population::Vector{Int}, rates::Vector{Float64})
 end
 
 # ╔═╡ b4d3faa9-4dc7-470b-82b9-e7dc97b45bb5
-function simulate(init_population::Vector{Int}, rates::Vector{Float64}, rxns::Vector{Vector{Int}})
+function simulate(
+    init_population::Vector{Int},
+    rates::Vector{Float64},
+    rxns::Vector{Vector{Int}},
+)
     population = [init_population]
     while population[end][1] > 0
         propensity = calculate_propensity(population[end], rates)
