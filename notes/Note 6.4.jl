@@ -6,10 +6,10 @@ using InteractiveUtils
 
 # ╔═╡ cf87b693-8c45-4206-a1dc-3812e4a81dfb
 begin
-	using Distributions
-	using GLMakie
-	using PDMats
-	using PDMatsExtras
+    using Distributions
+    using GLMakie
+    using PDMats
+    using PDMatsExtras
 end
 
 # ╔═╡ 66997050-e681-11ee-2d25-8dd49a364a92
@@ -18,7 +18,7 @@ md"""
 """
 
 # ╔═╡ 4dd99d47-6b18-4026-a405-d1b87dbbb16d
-get_kernel(x, λ, l) = λ^2 .* exp.(-(x .- transpose(x)) .^2 ./ l^2)
+get_kernel(x, λ, l) = λ^2 .* exp.(-(x .- transpose(x)) .^ 2 ./ l^2)
 
 # ╔═╡ c3fa5462-2740-49eb-9658-e1a7a517ec53
 x = -1:0.01:1;

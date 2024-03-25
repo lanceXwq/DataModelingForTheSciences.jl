@@ -15,7 +15,7 @@ begin
 end
 
 # ╔═╡ 7a6605b9-07bf-445c-b6ee-f916304c215f
-target = truncated(Normal(3, 2), lower = 0, upper = 5)
+target = truncated(Normal(3, 2), lower=0, upper=5)
 
 # ╔═╡ 390eb47e-45b2-4d0b-a4ee-125400a3fb3d
 function get_accep_ratio(
@@ -52,8 +52,8 @@ end
 # ╔═╡ d2c60d67-b5ca-42a0-bf76-41c5e294c3e9
 begin
     x = -0:0.1:5
-    hist(r, normalization = :pdf)
-    lines!(x, pdf.(target, x), color = :red)
+    hist(r, normalization=:pdf)
+    lines!(x, pdf.(target, x), color=:red)
     current_figure()
 end
 
