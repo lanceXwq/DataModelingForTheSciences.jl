@@ -4,14 +4,35 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 3446e426-62ac-4f98-8932-0685429ba3c0
-using GLMakie
-
-# ╔═╡ a9bb7d83-4a1f-405c-aaae-9154e57fbfda
+# ╔═╡ d9d30b6b-a704-45e9-988b-dbd12748757c
 begin
-    using PDMats
-    using PDMatsExtras
-    using Distributions
+    # Notebook related packages
+    using PlutoUI
+    md"""
+    !!! info "Notebook Packages"
+    	[PlutoUI](https://www.juliapackages.com/p/PlutoUI): Extension for Pluto to handle interactivity, provides the table of contents in this notebook. 
+    """
+end
+
+# ╔═╡ 3446e426-62ac-4f98-8932-0685429ba3c0
+begin
+    using GLMakie
+    md"""
+    !!! info "Ploting Packages"
+    	[GLMakie](https://docs.makie.org/stable/): Plotting library for the several plots in the notebook.
+    """
+end
+
+# ╔═╡ 365b7dff-b0c8-4caa-a331-cee18b24901f
+begin
+    using Distributions: MvNormal
+    using PDMatsExtras: PSDMat
+    md"""
+    !!! info "Multivariate Normal Related Packages"
+    	[Distributions](https://github.com/JuliaStats/Distributions.jl): A Julia package for probability distributions and associated functions.
+
+    	[PDMatsExtras](https://github.com/invenia/PDMatsExtras.jl): A package for extra Positive (Semi-) Definite Matrix types.
+    """
 end
 
 # ╔═╡ 641ef1d8-ea37-11ee-3bb8-cfcdf4004f4b
@@ -27,7 +48,8 @@ t = 0:dt:1;
 
 # ╔═╡ 9bc3ca46-be25-4731-92c9-e51584bf6369
 md"""
-Note that all code below assumes $t$ starts from 0.
+!!! note
+	All codes below assume $t$ starts from 0.
 """
 
 # ╔═╡ 73330c5a-a100-40fd-b7ed-57aba312de74
@@ -92,19 +114,25 @@ begin
     fig2
 end
 
+# ╔═╡ eb22cd7b-2d1e-40be-a6bf-5ea847ea68ba
+md"# Appendix"
+
+# ╔═╡ bd3d2d75-5078-49ca-9ebf-bb19cae80fd6
+TableOfContents()
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
-PDMats = "90014a1f-27ba-587c-ab20-58faa44d9150"
 PDMatsExtras = "2c7acb1b-7338-470f-b38f-951d2bcb9193"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
 Distributions = "~0.25.107"
 GLMakie = "~0.9.9"
-PDMats = "~0.11.31"
 PDMatsExtras = "~2.8.0"
+PlutoUI = "~0.7.58"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -113,7 +141,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "f254bf895c8811359162268d302863159642be4b"
+project_hash = "5685c747c74512cf67755080c824bc2c67213a98"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -130,6 +158,12 @@ weakdeps = ["ChainRulesCore", "Test"]
 git-tree-sha1 = "222ee9e50b98f51b5d78feb93dd928880df35f06"
 uuid = "398f06c4-4d28-53ec-89ca-5b2656b7603d"
 version = "0.3.0"
+
+[[deps.AbstractPlutoDingetjes]]
+deps = ["Pkg"]
+git-tree-sha1 = "0f748c81756f2e5e6854298f11ad8b2dfae6911a"
+uuid = "6e696c72-6542-2067-7265-42206c756150"
+version = "1.3.0"
 
 [[deps.AbstractTrees]]
 git-tree-sha1 = "2d9c9a55f9c93e8887ad391fbae72f8ef55e1177"
@@ -620,6 +654,24 @@ git-tree-sha1 = "f218fe3736ddf977e0e772bc9a586b2383da2685"
 uuid = "34004b35-14d8-5ef3-9330-4cdb6864b03a"
 version = "0.3.23"
 
+[[deps.Hyperscript]]
+deps = ["Test"]
+git-tree-sha1 = "179267cfa5e712760cd43dcae385d7ea90cc25a4"
+uuid = "47d2ed2b-36de-50cf-bf87-49c2cf4b8b91"
+version = "0.0.5"
+
+[[deps.HypertextLiteral]]
+deps = ["Tricks"]
+git-tree-sha1 = "7134810b1afce04bbc1045ca1985fbe81ce17653"
+uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
+version = "0.9.5"
+
+[[deps.IOCapture]]
+deps = ["Logging", "Random"]
+git-tree-sha1 = "8b72179abc660bfab5e28472e019392b97d0985c"
+uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
+version = "0.2.4"
+
 [[deps.ImageAxes]]
 deps = ["AxisArrays", "ImageBase", "ImageCore", "Reexport", "SimpleTraits"]
 git-tree-sha1 = "2e4520d67b0cef90865b3ef727594d2a58e0e1f8"
@@ -909,6 +961,11 @@ version = "0.3.27"
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 
+[[deps.MIMEs]]
+git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
+uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
+version = "0.1.4"
+
 [[deps.MKL_jll]]
 deps = ["Artifacts", "IntelOpenMP_jll", "JLLWrappers", "LazyArtifacts", "Libdl"]
 git-tree-sha1 = "72dc3cf284559eb8f53aa593fe62cb33f83ed0c0"
@@ -1180,6 +1237,12 @@ deps = ["ColorSchemes", "Colors", "Dates", "PrecompileTools", "Printf", "Random"
 git-tree-sha1 = "7b1a9df27f072ac4c9c7cbe5efb198489258d1f5"
 uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 version = "1.4.1"
+
+[[deps.PlutoUI]]
+deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
+git-tree-sha1 = "71a22244e352aa8c5f0f2adde4150f62368a3f2e"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.58"
 
 [[deps.PolygonOps]]
 git-tree-sha1 = "77b3d3605fc1cd0b42d95eba87dfcd2bf67d5ff6"
@@ -1553,6 +1616,11 @@ weakdeps = ["Random", "Test"]
     [deps.TranscodingStreams.extensions]
     TestExt = ["Test", "Random"]
 
+[[deps.Tricks]]
+git-tree-sha1 = "eae1bb484cd63b36999ee58be2de6c178105112f"
+uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
+version = "0.1.8"
+
 [[deps.TriplotBase]]
 git-tree-sha1 = "4d4ed7f294cda19382ff7de4c137d24d16adc89b"
 uuid = "981d1d27-644d-49a2-9326-4793e63143c3"
@@ -1562,6 +1630,11 @@ version = "0.1.0"
 git-tree-sha1 = "41d61b1c545b06279871ef1a4b5fcb2cac2191cd"
 uuid = "9d95972d-f1c8-5527-a6e0-b4b365fa01f6"
 version = "1.5.0"
+
+[[deps.URIs]]
+git-tree-sha1 = "67db6cc7b3821e19ebe75791a9dd19c9b1188f2b"
+uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
+version = "1.5.1"
 
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
@@ -1754,14 +1827,12 @@ version = "3.5.0+0"
 
 # ╔═╡ Cell order:
 # ╟─641ef1d8-ea37-11ee-3bb8-cfcdf4004f4b
-# ╠═3446e426-62ac-4f98-8932-0685429ba3c0
 # ╠═403c403e-de14-4ad4-b25b-d8cce93e8441
 # ╠═7b90a895-47ab-4960-8d44-b7ba67dfa6c2
-# ╟─9bc3ca46-be25-4731-92c9-e51584bf6369
+# ╠═9bc3ca46-be25-4731-92c9-e51584bf6369
 # ╠═73330c5a-a100-40fd-b7ed-57aba312de74
 # ╠═236b5531-423f-47a5-b6a5-3224acc0cbb4
 # ╟─fc49b122-c00c-4d38-ae7b-149f6aa51aa9
-# ╠═a9bb7d83-4a1f-405c-aaae-9154e57fbfda
 # ╠═6f96d2f3-7223-4f49-ba2f-e9c30427cc48
 # ╠═2f9c9ba9-a9d8-45e1-b415-bec228f0607a
 # ╠═4f8eecaa-9e78-401b-811a-6a05e5fd281e
@@ -1774,5 +1845,10 @@ version = "3.5.0+0"
 # ╠═efb73e63-5aa4-4076-83e9-539ae6b0ab0d
 # ╠═16602a28-d470-46ec-bb26-dddb6bb901c1
 # ╠═98e53e51-6890-4cc4-a182-f85c99fa9cba
+# ╟─eb22cd7b-2d1e-40be-a6bf-5ea847ea68ba
+# ╠═bd3d2d75-5078-49ca-9ebf-bb19cae80fd6
+# ╠═d9d30b6b-a704-45e9-988b-dbd12748757c
+# ╠═3446e426-62ac-4f98-8932-0685429ba3c0
+# ╠═365b7dff-b0c8-4caa-a331-cee18b24901f
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
